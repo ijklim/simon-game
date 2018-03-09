@@ -1,10 +1,3 @@
-const gameButtons = [
-  { color: 'green', sound: '' },
-  { color: 'red', sound: '' },
-  { color: 'yellow', sound: '' },
-  { color: 'blue', sound: '' },
-];
-
 Vue.component('game-buttons', {
   template: `
     <v-btn
@@ -19,30 +12,40 @@ Vue.component('game-buttons', {
   `,
   data () {
     return {
-      mouseDownInterval: ''
+      oscillatorNode: false
     }
   },
   props: {
-    baseURL: {
-      type: String,
-      default: ''
+    audioCtx: {
+      type: AudioContext,
+      default: {}
     },
     color: {
       type: String,
       default: ''
+    },
+    soundFrequency: {
+      type: Number,
+      default: 200
     }
   },
   methods: {
     onMouseDown () {
-      let soundFile = `${baseURL}assets/sound/sound-${this.color}.mp3`;
-      this.mouseDownInterval = 'down';
-      console.log('todo: mouse is', this.mouseDownInterval)
+      if (!this.audioCtx) return;
+
+      this.oscillatorNode = this.audioCtx.createOscillator();
+      this.oscillatorNode.type = "sine";
+      this.oscillatorNode.frequency.setValueAtTime(this.soundFrequency, this.audioCtx.currentTime);
+      this.oscillatorNode.connect(this.audioCtx.destination);
+      
+      this.oscillatorNode.start();
     },
     onMouseUp () {
+      this.oscillatorNode.stop();
       this.$emit('button-clicked', this.color);
-      console.log('todo: mouse was', this.mouseDownInterval)
-      this.mouseDownInterval = 'up';
-      console.log('todo: mouse is', this.mouseDownInterval)
     }
+  },
+  mounted () {
+    
   }
 });

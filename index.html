@@ -10,10 +10,6 @@
   <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.0.5/vuetify.css">
   <style>
-    :root {
-        --width-gameboard: 450px;
-    }
-
     .application {
       font-family: 'Fira Mono', sans-serif;
       text-align: center;
@@ -26,7 +22,7 @@
 
     .game-pad {
       border-radius: 10px;
-      background: url('assets/img/bg--game-pad.jpg') repeat-y top center;
+      background: url('https://raw.githubusercontent.com/ijklim/simon-game/gh-pages/assets/img/bg--game-pad.jpg') repeat-y top center;
     }
   </style>
 </head>
@@ -42,7 +38,7 @@
         </v-flex>
 
         <v-flex xs12 sm10 md8 lg6 class="mb-5">
-          <game-pad :baseUrl="baseUrl"></game-pad>
+          <game-pad></game-pad>
         </v-flex>
 
       </v-layout>
@@ -58,8 +54,7 @@
       el: '#app',
       data () {
         return {
-          appName: 'Simon® Game',
-          baseUrl: ''
+          appName: 'Simon® Game'
         }
       }
     });
