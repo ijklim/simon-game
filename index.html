@@ -5,7 +5,7 @@
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
 
-  <title>Simon Game v.1</title>
+  <title>Simon Game v.2</title>
 
   <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.0.5/vuetify.css">
@@ -26,6 +26,7 @@
 
     .game-pad {
       border-radius: 10px;
+      background: url('assets/img/bg--game-pad.jpg') repeat-y top center;
     }
   </style>
 </head>
@@ -37,11 +38,11 @@
     <v-container mt-5>
       <v-layout wrap justify-center>
         <v-flex xs12 class="mb-5 display-1">
-          <h1>{{ appName }}</h1>
+          <h1 v-text="appName"></h1>
         </v-flex>
 
         <v-flex xs12 sm10 md8 lg6 class="mb-5">
-          <game-pad></game-pad>
+          <game-pad :baseUrl="baseUrl"></game-pad>
         </v-flex>
 
       </v-layout>
@@ -49,54 +50,16 @@
   </v-app>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.0.3/vuetify.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.0.5/vuetify.js"></script>
+  <script src="components/game-buttons.js"></script>
+  <script src="components/game-pad.js"></script>
   <script type='text/javascript'>
-    const gameButtons = [
-      { color: 'green', sound: '' },
-      { color: 'red', sound: '' },
-      { color: 'yellow', sound: '' },
-      { color: 'blue', sound: '' },
-    ];
-  
-    Vue.component('game-buttons', {
-      template: `
-        <v-btn :class="color" class="game-button" block>
-          &nbsp;
-        </v-btn>
-      `,
-      props: {
-        color: {
-          type: String,
-          default: ''
-        }
-      }
-    });
-    
-    Vue.component('game-pad', {
-      template: `
-        <v-card class="white elevation-10 game-pad">
-          <v-container grid-list-lg>
-            <v-layout wrap>
-              <v-flex xs6 v-for="button in buttons" :key="button.id">
-                <game-buttons :color="button.color"></game-buttons>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-card>
-      `,
-      data () {
-        return {
-          buttons: gameButtons
-        }
-      }
-    });
-
-
     let v = new Vue({
       el: '#app',
       data () {
         return {
-          appName: 'Simon® Game'
+          appName: 'Simon® Game',
+          baseUrl: ''
         }
       }
     });
