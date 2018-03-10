@@ -5,7 +5,7 @@
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
 
-  <title>Simon Game v.2</title>
+  <title>Simon Game v.3</title>
 
   <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.0.5/vuetify.css">
@@ -24,6 +24,10 @@
       border-radius: 10px;
       background: url('https://raw.githubusercontent.com/ijklim/simon-game/gh-pages/assets/img/bg--game-pad.jpg') repeat-y top center;
     }
+
+    .transparent {
+      background: none;
+    }
   </style>
 </head>
 
@@ -34,7 +38,7 @@
     <v-container mt-5>
       <v-layout wrap justify-center>
         <v-flex xs12 class="mb-5 display-1">
-          <h1 v-text="appName"></h1>
+          <h2 v-text="appName"></h2>
         </v-flex>
 
         <v-flex xs12 sm10 md8 lg6 class="mb-5">

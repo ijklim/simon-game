@@ -2,10 +2,10 @@ Vue.component('game-buttons', {
   template: `
     <v-btn
       block
-      class="game-button elevation-5"
-      :class="color"
-      @mousedown="onMouseDown"
-      @mouseup="onMouseUp"
+      class="game-button"
+      :class="buttonClass"
+      @mousedown="pressButton"
+      @mouseup="releaseButton"
     >
       &nbsp;
     </v-btn>
@@ -24,13 +24,34 @@ Vue.component('game-buttons', {
       type: String,
       default: ''
     },
+    isOn: {
+      type: Boolean,
+      default: false
+    },
     soundFrequency: {
       type: Number,
       default: 200
     }
   },
+  computed: {
+    buttonClass () {
+      let classes = this.color;
+
+      if (this.isOn) classes += '  darken-3';
+      else classes += ' elevation-5';
+
+      return classes;
+    }
+  },
+  watch: {
+    isOn (value) {
+      if (!value) return this.releaseButton()
+
+      return this.pressButton()
+    }
+  },
   methods: {
-    onMouseDown () {
+    pressButton () {
       if (!this.audioCtx) return;
 
       this.oscillatorNode = this.audioCtx.createOscillator();
@@ -40,7 +61,7 @@ Vue.component('game-buttons', {
       
       this.oscillatorNode.start();
     },
-    onMouseUp () {
+    releaseButton () {
       this.oscillatorNode.stop();
       this.$emit('button-clicked', this.color);
     }
