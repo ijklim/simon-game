@@ -96,6 +96,9 @@ Vue.component('game-pad', {
      * @param {Array} buttonsToMatch 
      */
     activateButtons (buttonsToMatch) {
+      // To handle player interrupting sequence with Reset
+      if (this.buttonsToMatch.length < buttonsToMatch.length) return this.blockPlayerInput = false;
+      
       if (buttonsToMatch.length === 0) return this.blockPlayerInput = false;
 
       let color = buttonsToMatch[0];
