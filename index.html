@@ -5,7 +5,7 @@
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
 
-  <title>Simon Game v.3</title>
+  <title>Simon Game v.6</title>
 
   <link href="https://fonts.googleapis.com/css?family=Fira+Mono|Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vuetify/1.0.5/vuetify.css">
@@ -15,18 +15,39 @@
       text-align: center;
     }
 
+    /* Full screen background */
+    #app {
+      /* Location of the image */
+      background-image: url(https://raw.githubusercontent.com/ijklim/simon-game/gh-pages/assets/img/bg.png);
+
+      /* Background image is centered vertically and horizontally at all times */
+      background-position: center center;
+
+      /* Background image doesn't tile */
+      background-repeat: no-repeat;
+
+      /* Background image is fixed in the viewport so that it doesn't move when 
+     the content's height is greater than the image's height */
+      background-attachment: fixed;
+
+      /* This is what makes the background image rescale based
+     on the container's size */
+      background-size: cover;
+
+      /* Set a background color that will be displayed
+     while the background image is loading */
+      background-color: #fff;
+    }
+
     .game-button {
       height: 150px;
       border-radius: 5px;
     }
 
-    .game-pad {
-      border-radius: 10px;
-      background: url('https://raw.githubusercontent.com/ijklim/simon-game/gh-pages/assets/img/bg--game-pad.jpg') repeat-y top center;
-    }
-
-    .transparent {
-      background: none;
+    /* Overwrite default card background, used by game-pad */
+    .theme--light .card {
+      border-radius: 5px;
+      background-image: url(https://raw.githubusercontent.com/ijklim/simon-game/gh-pages/assets/img/bg--game-pad.jpg);
     }
   </style>
 </head>
@@ -34,7 +55,7 @@
 <body>
   <!-- https://codepen.io/ivanlim/full/ -->
   <!-- Vuetify Material color palette: https://vuetifyjs.com/en/style/colors -->
-  <v-app id="app" class="yellow lighten-5">
+  <v-app id="app">
     <v-container mt-5>
       <v-layout wrap justify-center>
         <v-flex xs12 class="mb-5 display-1">
