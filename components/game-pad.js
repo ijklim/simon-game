@@ -4,6 +4,7 @@ const DURATION_WRONG_BUTTON_INDICATOR_FLASH = 300;
 const DURATION_NEXT_SEQUENCE = 750;
 const DURATION_ACTIVATION_HOLD_DOWN_BUTTON = 700;
 const DURATION_ACTIVATION_NEXT_BUTTON = 200;
+const WIN_CONDITION = 2;
 
 Vue.component('game-pad', {
   template: `
@@ -36,6 +37,7 @@ Vue.component('game-pad', {
             </v-chip>
             <v-btn
               @click="resetGame"
+              :class="{ 'black--text': buttonsToMatch.length > 0 }"
               :color="buttonsToMatch.length ? 'warning' : 'error'"
             >
               {{ buttonsToMatch.length ? 'Reset' : 'Start' }}
@@ -98,7 +100,7 @@ Vue.component('game-pad', {
     activateButtons (buttonsToMatch) {
       // To handle player interrupting sequence with Reset
       if (this.buttonsToMatch.length < buttonsToMatch.length) return this.blockPlayerInput = false;
-      
+
       if (buttonsToMatch.length === 0) return this.blockPlayerInput = false;
 
       let color = buttonsToMatch[0];
@@ -126,24 +128,48 @@ Vue.component('game-pad', {
     gameButtonClicked (color) {
       if (this.buttonsToMatch.length === 0) return;
 
-      // Correct
-      if (this.buttonsToMatch[this.pressCount] === color) {
-        if (++this.pressCount === this.buttonsToMatch.length) {
-          // All buttons in current sequence clicked, show the next sequence
-          setTimeout(() => {
+      // Wrong color selected
+      if (this.buttonsToMatch[this.pressCount] !== color) {
+        setTimeout(() => {
+          this.activateButtons(this.buttonsToMatch);
+        }, DURATION_WRONG_BUTTON_CLICKED);
+        return this.pressCount = 0;
+      }
+
+      // Correct color selected
+      this.pressCount++;
+
+      // Wait for next input from player
+      if (this.pressCount !== this.buttonsToMatch.length) return;
+
+      // Player has won the game
+      if (this.pressCount === WIN_CONDITION) {
+        swal({
+          type: 'success',
+          title: 'Congratulations!',
+          text: `You made it to ${WIN_CONDITION}!`,
+          showCloseButton: true,
+          confirmButtonText: 'New Game',
+          showCancelButton: true,
+          cancelButtonText: 'Stop'
+        })
+          .then(result => {
+            if (result.value) return this.resetGame();
+
             this.pressCount = 0;
-            this.buttonsToMatch = this.addRandomColorToArray(this.buttonsToMatch);
-            this.activateButtons(this.buttonsToMatch);
-          }, DURATION_NEXT_SEQUENCE);
-        }
+            this.buttonsToMatch = [];
+            return;
+          });
+
         return;
       }
 
-      // Wrong button selected
-      this.pressCount = 0;
+      // All buttons in current sequence clicked, show the next sequence
       setTimeout(() => {
+        this.pressCount = 0;
+        this.buttonsToMatch = this.addRandomColorToArray(this.buttonsToMatch);
         this.activateButtons(this.buttonsToMatch);
-      }, DURATION_WRONG_BUTTON_CLICKED);
+      }, DURATION_NEXT_SEQUENCE);
     },
     resetGame () {
       this.blockPlayerInput = true;
