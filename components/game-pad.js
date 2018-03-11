@@ -4,13 +4,13 @@ const DURATION_WRONG_BUTTON_INDICATOR_FLASH = 300;
 const DURATION_NEXT_SEQUENCE = 750;
 const DURATION_ACTIVATION_HOLD_DOWN_BUTTON = 700;
 const DURATION_ACTIVATION_NEXT_BUTTON = 200;
-const WIN_CONDITION = 2;
+const WIN_CONDITION = 20;
 
 Vue.component('game-pad', {
   template: `
     <v-card class="elevation-10 teal lighten-5">
       <v-container grid-list-lg>
-        <v-layout wrap justify-center>
+        <v-layout wrap>
           
           <v-flex xs6 v-for="(button, index) in buttons" :key="button.id">
             
@@ -28,19 +28,30 @@ Vue.component('game-pad', {
           </v-flex>
 
           <v-flex xs12 text-xs-center>
+            <!-- Count -->
             <v-chip
               class="elevation-5"
               style="width:110px;"
               :class="{ 'red': wrongButtonClicked }"
             >
-              <h3 class="text-xs-center" v-html="countDisplay"></h3>
+              <h3 v-html="countDisplay"></h3>
             </v-chip>
+
+            <!-- Start/Reset button -->
             <v-btn
               @click="resetGame"
               :class="{ 'black--text': buttonsToMatch.length > 0 }"
-              :color="buttonsToMatch.length ? 'warning' : 'error'"
+              :color="buttonsToMatch.length ? 'warning' : 'success'"
             >
               {{ buttonsToMatch.length ? 'Reset' : 'Start' }}
+            </v-btn>
+
+            <!-- Strict mode switch -->
+            <v-btn
+              @click="isStrictMode = !isStrictMode"
+              :color="isStrictMode ? 'error' : 'info'"
+            >
+              {{ isStrictMode ? 'Strict' : 'Normal' }} Mode
             </v-btn>
           </v-flex>
 
@@ -54,6 +65,7 @@ Vue.component('game-pad', {
       blockPlayerInput: false,
       buttons: [],
       buttonsToMatch: [],
+      isStrictMode: false,
       pressCount: 0,
       wrongButtonClicked: false,
       wrongButtonTimer: 0
@@ -131,6 +143,8 @@ Vue.component('game-pad', {
       // Wrong color selected
       if (this.buttonsToMatch[this.pressCount] !== color) {
         setTimeout(() => {
+          if (this.isStrictMode) return this.resetGame();
+
           this.activateButtons(this.buttonsToMatch);
         }, DURATION_WRONG_BUTTON_CLICKED);
         return this.pressCount = 0;
