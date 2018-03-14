@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://ijklim.github.io/simon-game/">
-    <img src="https://github.com/ijklim/simon-game/blob/master/screenshot.jpg" width="1000px">
+    <img src="https://github.com/ijklim/simon-game/blob/master/screenshot.png" width="1000px">
     <br>
     Live Demo
   </a>
