@@ -1,3 +1,9 @@
 # Simon® Game, a freeCodeCamp project
 
-[Live Demo](https://ijklim.github.io/simon-game)
+<p align="center">
+  <a href="https://ijklim.github.io/simon-game/">
+    <img src="https://github.com/ijklim/simon-game/blob/master/screenshot.jpg" width="1000px">
+    <br>
+    Live Demo
+  </a>
+</p>
